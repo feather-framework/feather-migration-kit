@@ -9,7 +9,7 @@ import FeatherComponent
 
 public protocol Migration {
 
-    var identifier: String { get }
+    static var identifier: String { get }
 
     func perform(_ components: ComponentRegistry) async throws
     func revert(_ components: ComponentRegistry) async throws
@@ -17,8 +17,7 @@ public protocol Migration {
 
 extension Migration {
 
-    public var identifier: String {
-        String(describing: type(of: self))
-            .replacingOccurrences(of: "()", with: "")
+    public static var identifier: String {
+        String(reflecting: self)
     }
 }

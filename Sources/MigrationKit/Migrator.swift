@@ -31,7 +31,7 @@ public struct Migrator {
         for group in groups {
             for migration in group.migrations() {
                 let entry = MigrationEntry(
-                    id: migration.identifier,
+                    id: type(of: migration).identifier,
                     groupId: group.identifier
                 )
                 guard !entries.contains(entry) else {
@@ -75,7 +75,7 @@ public struct Migrator {
         for group in groups {
             for migration in group.migrations() {
                 let entry = MigrationEntry(
-                    id: migration.identifier,
+                    id: type(of: migration).identifier,
                     groupId: group.identifier
                 )
                 guard toRevert.contains(entry) else {
