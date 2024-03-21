@@ -10,7 +10,12 @@ import MigrationKit
 import XCTest
 
 enum Foo {
-    enum Bar {
+    enum Bar: MigrationGroup {
+
+        func migrations() -> [Migration] {
+            []
+        }
+
         struct V1: Migration {
 
             func perform(
@@ -32,6 +37,7 @@ enum Foo {
 final class MigrationKitTests: XCTestCase {
 
     func testIdentifier() async throws {
+        XCTAssertEqual(Foo.Bar.identifier, "MigrationKitTests.Foo.Bar")
         XCTAssertEqual(Foo.Bar.V1.identifier, "MigrationKitTests.Foo.Bar.V1")
     }
 }

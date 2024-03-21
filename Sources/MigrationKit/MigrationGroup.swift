@@ -7,14 +7,14 @@
 
 public protocol MigrationGroup {
 
-    var identifier: String { get }
+    static var identifier: String { get }
 
     func migrations() -> [Migration]
 }
 
 extension MigrationGroup {
 
-    public var identifier: String {
-        String(describing: self).replacingOccurrences(of: "()", with: "")
+    public static var identifier: String {
+        String(reflecting: self)
     }
 }

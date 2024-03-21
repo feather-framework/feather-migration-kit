@@ -32,7 +32,7 @@ public struct Migrator {
             for migration in group.migrations() {
                 let entry = MigrationEntry(
                     id: type(of: migration).identifier,
-                    groupId: group.identifier
+                    groupId: type(of: group).identifier
                 )
                 guard !entries.contains(entry) else {
                     logger.trace(
@@ -50,14 +50,8 @@ public struct Migrator {
                         "id": "\(entry.uniqueName)"
                     ]
                 )
-
-                do {
-                    try await migration.perform(components)
-                    entries.append(entry)
-                }
-                catch {
-                    print("error \(error)")
-                }
+                try await migration.perform(components)
+                entries.append(entry)
             }
         }
 
@@ -76,7 +70,7 @@ public struct Migrator {
             for migration in group.migrations() {
                 let entry = MigrationEntry(
                     id: type(of: migration).identifier,
-                    groupId: group.identifier
+                    groupId: type(of: group).identifier
                 )
                 guard toRevert.contains(entry) else {
                     logger.trace(
@@ -94,13 +88,7 @@ public struct Migrator {
                         "id": "\(entry.uniqueName)"
                     ]
                 )
-
-                do {
-                    try await migration.revert(components)
-                }
-                catch {
-                    print("error \(error)")
-                }
+                try await migration.revert(components)
             }
         }
         try storage.save(toKeep)
